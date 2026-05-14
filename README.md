@@ -1,3 +1,60 @@
+# JobBoard Pro
+
+Full-stack assessment implementation for job listings, applications, status workflow, and analytics.
+
+## Local Setup
+
+### Backend
+
+```bash
+cd backend
+python -m venv .venv
+.venv\Scripts\activate
+python -m pip install -r requirements.txt
+uvicorn app.main:app --reload
+```
+
+The API runs at `http://localhost:8000`. Open `http://localhost:8000/docs` for the FastAPI documentation.
+
+### Frontend
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+The frontend runs at `http://localhost:3000`. By default, `/api/*` requests are **proxied** to FastAPI (see `frontend/next.config.js`) so the browser does not hit cross-origin or IPv4/IPv6 `localhost` mismatches.
+
+- Optional `frontend/.env.local`: `BACKEND_API_URL=http://127.0.0.1:8000` if your API is not on port 8000.
+- Set `NEXT_PUBLIC_API_BASE_URL` only if you need the browser to call the API host directly instead of the proxy.
+
+### Tests
+
+```bash
+python -m pytest tests
+```
+
+## Product Assumptions
+
+- There is no authentication; manager actions are trust-based as requested.
+- Duplicate applications are blocked permanently for the same email and job.
+- Closing a job blocks new applications but leaves existing pending applications unchanged.
+- Hitting `max_applicants` stops new applications without auto-closing the listing.
+
+## Main API Endpoints
+
+- `POST /api/jobs`
+- `GET /api/jobs`
+- `GET /api/jobs/{id}`
+- `POST /api/jobs/{id}/applications`
+- `GET /api/jobs/{id}/applications`
+- `PATCH /api/applications/{id}/status`
+- `PATCH /api/jobs/{id}/close`
+- `GET /api/stats`
+
+## Original Submission Guide
+
 # Step-by-Step Guide: How to Fork, Clone, and Submit Your Assessment
 
 **Repository:** https://github.com/savvpro/savvpro-test-jobboard
